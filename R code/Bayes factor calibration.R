@@ -1,4 +1,8 @@
 # Bayes factor calibration
+
+library(tidyverse)
+library(brms)
+
 fit_model_H0 <- function(dat) {
   brm(
     formula = y ~ 1 + (1 | participant),
