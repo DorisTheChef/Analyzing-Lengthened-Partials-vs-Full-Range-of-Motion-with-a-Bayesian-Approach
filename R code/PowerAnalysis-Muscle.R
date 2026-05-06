@@ -142,8 +142,8 @@ for (i in seq_len(nrow(sens))) {
 sens$effect_label <- factor(
   sens$true_effect,
   levels = effect_sizes,
-  labels = sprintf("Δ = %.3f mm \n (d = %.2f)", 
-                   effect_sizes, effect_sizes / sigma_within)
+  labels = sprintf("Δ = %.3f mm", 
+                   effect_sizes)
 )
 
 p2 <- ggplot(sens,

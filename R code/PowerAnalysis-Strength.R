@@ -1,4 +1,3 @@
-
 library(ggplot2)
 library(dplyr)
 
@@ -78,10 +77,10 @@ print(p1)
 # of n, producing a flat line just like the muscle-thickness analysis.
 
 # =============================================================================
-# SENSITIVITY: VARY EFFECT SIZE (clinically plausible scenarios)
+# SENSITIVITY: VARY EFFECT SIZE
 # The observed effect (0.400 lbs) is trivially small relative to within-person noise.
-# In strength training research, a 5–20 lbs difference in 10RM is considered
-# practically meaningful for lat pulldown. We sweep 2–16 lbs to show where
+# From the paper, a 0.5-4 lbs difference in 10RM is considered
+# practically meaningful for lat pulldown. We sweep 0.5-4 lbs to show where
 # studies become adequately powered.
 
 effect_sizes <- seq(0.5, 4.0, by = 0.5)  # lbs difference
@@ -102,7 +101,7 @@ for (i in seq_len(nrow(sens))) {
 sens$effect_label <- factor(
   sens$true_effect,
   levels = effect_sizes,
-  labels = sprintf("\u0394 = %.0f lbs\n(d = %.2f)", effect_sizes, effect_sizes / sigma_within)
+  labels = sprintf("\u0394 = %.1f lbs", effect_sizes)
 )
 
 p2 <- ggplot(sens,
@@ -118,14 +117,14 @@ p2 <- ggplot(sens,
   annotate("text", x = 155, y = 0.05 - alpha,
            label = sprintf("observed \u0394 = 0.400 lbs"), color = "grey40") +
   geom_point(size = 2.8) +
-  scale_color_brewer(palette = "Set1", name = "Effect Size") +
+  scale_color_brewer(palette = "Set1", name = "Gain Size") +
   scale_fill_brewer(palette  = "Set1", guide  = "none") +
   scale_x_continuous(breaks = n_vec,
                      name = "Participants per Treatment (n)") +
   scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.20),
                      name = expression("Estimated Power (" * alpha * " = 0.05)")) +
   labs(
-    title   = "Sensitivity: Power by Effect Size (fROM vs pROM Strength)",
+    title   = "Sensitivity: Power by Gain Size (fROM vs pROM Strength)",
     caption = "Shaded bands = 95% CI on estimated power."
   ) +
   theme_bw(base_size = 13) +
@@ -140,7 +139,7 @@ print(p2)
 # =============================================================================
 # SUMMARY TABLES
 
-cat("\n=== PRIMARY POWER TABLE (observed effect = 0.400 lbs) ===\n")
+cat("\nPRIMARY POWER TABLE (observed effect = 0.400 lbs)n")
 print(
   results |>
     mutate(cohen_d = round(true_effect / sigma_within, 3),
@@ -150,7 +149,7 @@ print(
     select(n_per_group, power, se)
 )
 
-cat("\n=== SENSITIVITY TABLE (effect size x n) ===\n")
+cat("\nSENSITIVITY TABLE (effect size x n)n")
 print(
   sens |>
     select(n_per_group, true_effect, cohen_d, power, se) |>
@@ -165,11 +164,6 @@ print(
 # The observed strength difference between fROM and pROM (0.400 lbs) yields
 # Cohen's d ≈ 0.046 — far below any curve in the sensitivity plot.
 # Even at n = 200, power for the observed effect remains near 5% (chance level).
-#
-# From the sensitivity analysis:
-#   • A 6 lbs difference (d ≈ 0.70) requires n ≈ 30–40 to reach 80% power.
-#   • A 4 lbs difference (d ≈ 0.46) requires n ≈ 70–80.
-#   • A 2 lbs difference (d ≈ 0.23) requires n > 200.
 #
 # This mirrors the muscle-thickness finding: the study is severely underpowered
 # to detect the small (if any) strength difference actually present.
