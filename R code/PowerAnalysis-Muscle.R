@@ -5,10 +5,10 @@ library(dplyr)
 
 set.seed(261)
 
-# EMPIRICAL PARAMETERS (estimated from the paper)
+#EMPIRICAL PARAMETERS (estimated from the paper)
 
-mu_pROM      <- 1.847   # mean change for pROM
-mu_fROM      <- 1.822   # mean change for fROM
+mu_pROM      <- 1.847
+mu_fROM      <- 1.822
 true_effect  <- mu_pROM - mu_fROM
 
 sigma_within <- 2.12
@@ -23,7 +23,7 @@ alpha        <- 0.05
 
 simpson_cors <- c(-0.5, 0, 0.5)
 
-# SIMULATION FUNCTION
+#SIMULATION FUNCTION
 
 simulate_power <- function(n, rho, n_sim, true_effect,
                            mu_fROM, sigma_b, sigma_e, alpha) {
@@ -32,19 +32,15 @@ simulate_power <- function(n, rho, n_sim, true_effect,
   reject <- logical(n_sim)
   
   for (s in seq_len(n_sim)) {
-    # Each participant's true difference = true_effect + noise
     d <- rnorm(n, mean = true_effect, sd = sd_diff)
     
-    # Paired t-test: H0: mean difference = 0
     p_val     <- t.test(d, mu = 0)$p.value
     reject[s] <- p_val < alpha
   }
   mean(reject)
 }
 
-# =============================================================================
-# 3. RUN SIMULATION ACROSS GRID
-# =============================================================================
+#RUN SIMULATION
 
 results <- data.frame(n_per_group = n_vec)
 results$power <- NA_real_
@@ -55,7 +51,7 @@ for (i in seq_len(nrow(results))) {
   
   pw <- simulate_power(
     n           = n,
-    rho         = 0,        # fixed: no within-participant correlation
+    rho         = 0,#fixed: no within-participant correlation
     n_sim       = n_sim,
     true_effect = true_effect,
     mu_fROM     = mu_fROM,
@@ -71,7 +67,7 @@ for (i in seq_len(nrow(results))) {
 
 print(results)
 
-# POWER CURVES PLOT
+#POWER CURVES PLOT
 
 p <- ggplot(results, aes(x = n_per_group, y = power)) +
   geom_ribbon(aes(ymin = power - 1.96 * se,
@@ -97,19 +93,16 @@ p <- ggplot(results, aes(x = n_per_group, y = power)) +
   )
 print(p)
 
-#Comments: Very low power, essentially a flat line regardless of how large n gets
+#Very low power, essentially a flat line regardless of how large n gets
 
-# 5. SENSITIVITY: VARY EFFECT SIZE (hypothetical scenarios)
-# what would power look like if the true effect were larger than what we observed?
-# The observed effect (~0.025 mm) is very small — near the null.
-# based on prior literature: 0.5–2 mm differences are clinically relevant
-
+# SENSITIVITY: VARYING EFFECT SIZE
+#what would power look like if the true effect were larger than what we observed?
+#The observed effect (~0.025 mm) is very smalL.
 #If the true effect were actually 0.5 mm, or 1 mm, or 2 mm, 
-#effect sizes that would be clinically meaningful for muscle growth,
 #how large would n need to be to detect it?
 
-effect_sizes <- seq(0.25, 2.0, by = 0.25)   # mm
-rho_fixed    <- 0.0   # neutral within-participant correlation
+effect_sizes <- seq(0.25, 2.0, by = 0.25)
+rho_fixed    <- 0.0   #neutral within-participant correlation
 #because theres no individual participant IDs linking the two limbs in our data
 
 sens <- expand.grid(
@@ -178,7 +171,7 @@ p2 <- ggplot(sens,
   )
 print(p2)
 
-# SUMMARY TABLE
+#SUMMARY TABLE
 
 print(
   results |>

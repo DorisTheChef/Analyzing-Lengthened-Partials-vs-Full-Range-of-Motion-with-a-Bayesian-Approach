@@ -3,29 +3,26 @@ library(dplyr)
 
 set.seed(261)
 
-# EMPIRICAL PARAMETERS
-# Design: within-person crossover (bilateral lat pulldown)
-#
-# Outcome: 10RM load change (Post – Pre) in lbs, per arm per condition
-#   Paired t-test: t = 0.328, p = 0.744  (n = 50 participants)
+#EMPIRICAL PARAMETERS
+#Design: within-person crossover (bilateral lat pulldown)
+#Outcome: 10RM load change (Post – Pre) in lbs, per arm per condition
+#  Paired t-test: t = 0.328, p = 0.744  (n = 50 participants)
 
-mu_fROM      <- 5.300   # mean 10RM change for fROM arm (lbs)
-mu_pROM      <- 4.900   # mean 10RM change for pROM arm (lbs)
+mu_fROM      <- 5.300
+mu_pROM      <- 4.900
 true_effect  <- mu_fROM - mu_pROM
 
-# Within-person SD of the paired difference — the key variance for paired test
 sigma_within <- 8.621
 
 n_vec  <- seq(20, 200, by = 10)
 n_sim  <- 1000
 alpha  <- 0.05
 
-# =============================================================================
-# SIMULATION FUNCTION
+#SIMULATION FUNCTION
+
 simulate_power <- function(n, n_sim, true_effect, sigma_within, alpha) {
   reject <- logical(n_sim)
   for (s in seq_len(n_sim)) {
-    # Simulate n paired differences
     d         <- rnorm(n, mean = true_effect, sd = sigma_within)
     p_val     <- t.test(d, mu = 0)$p.value
     reject[s] <- p_val < alpha
@@ -33,8 +30,7 @@ simulate_power <- function(n, n_sim, true_effect, sigma_within, alpha) {
   mean(reject)
 }
 
-# =============================================================================
-# POWER CURVE (observed effect = 0.400 lbs)
+#POWER CURVE (observed = 0.400 lbs)
 
 results <- data.frame(n_per_group = n_vec, power = NA_real_, se = NA_real_)
 
@@ -72,18 +68,16 @@ p1 <- ggplot(results, aes(x = n_per_group, y = power)) +
   )
 print(p1)
 
-# Comments: True effect of 0.400 lbs is essentially indistinguishable from zero. 
-# Power stays near nominal α = 5% regardless
-# of n, producing a flat line just like the muscle-thickness analysis.
+#True effect of 0.400 lbs is essentially indistinguishable from zero. 
+#Power stays near nominal α = 5% regardless
+#of n, producing a flat line just like the muscle-thickness analysis.
 
-# =============================================================================
-# SENSITIVITY: VARY EFFECT SIZE
-# The observed effect (0.400 lbs) is trivially small relative to within-person noise.
-# From the paper, a 0.5-4 lbs difference in 10RM is considered
-# practically meaningful for lat pulldown. We sweep 0.5-4 lbs to show where
-# studies become adequately powered.
 
-effect_sizes <- seq(0.5, 4.0, by = 0.5)  # lbs difference
+#SENSITIVITY: VARY EFFECT SIZE
+#The observed effect (0.400 lbs) is trivially small.
+#Sweep 0.5-4 lbs (using paper's CrI) to show where studies become adequately powered
+
+effect_sizes <- seq(0.5, 4.0, by = 0.5)
 
 sens <- expand.grid(n_per_group = n_vec, true_effect = effect_sizes)
 sens$power    <- NA_real_
@@ -136,8 +130,7 @@ p2 <- ggplot(sens,
   )
 print(p2)
 
-# =============================================================================
-# SUMMARY TABLES
+#SUMMARY TABLES
 
 cat("\nPRIMARY POWER TABLE (observed effect = 0.400 lbs)n")
 print(
@@ -157,16 +150,11 @@ print(
     arrange(true_effect, n_per_group)
 )
 
-# =============================================================================
-# INTERPRETATION
-# =============================================================================
-# Wolf et al. used n = 25 per condition (50 total, bilateral design).
-# The observed strength difference between fROM and pROM (0.400 lbs) yields
-# Cohen's d ≈ 0.046 — far below any curve in the sensitivity plot.
-# Even at n = 200, power for the observed effect remains near 5% (chance level).
-#
-# This mirrors the muscle-thickness finding: the study is severely underpowered
-# to detect the small (if any) strength difference actually present.
-# A Bayesian approach is better suited here — the posterior can characterise
-# the near-zero effect with credible intervals, rather than simply failing to
-# reject H₀ with very low power.
+#Wolf et al. used n = 25 per condition.
+#The observed strength difference between fROM and pROM (0.400 lbs) is
+#below any curve in the sensitivity plot.
+#This mirrors the muscle-thickness finding: the study is severely underpowered
+#to detect the small (if any) strength difference actually present.
+#A Bayesian approach is better suited here — the posterior can characterise
+#the near-zero effect with credible intervals, rather than simply failing to
+#reject H₀ with very low power.
