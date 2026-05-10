@@ -1,9 +1,10 @@
 library(tidyverse)
-setwd("/Users/baixuezhang/Documents/SJSU/study/Math 261B/Project/")
+library(here)
+setwd(here())
 
 
-muscle <- read_csv("Data Sheet1.csv")
-strength <- read_csv("Data Sheet2.csv")
+muscle <- read_csv("Datasets/Data Sheet1.csv")
+strength <- read_csv("Datasets/Data Sheet2.csv")
 muscle <- muscle[1:50, 1:13]
 
 
@@ -74,6 +75,7 @@ mean2 <- mean(muscle_change$BB55_change[muscle_change$GROUP == 2])
 
 # 标准差
 sd1 <- sd(muscle_change$BB55_change[muscle_change$GROUP == 1])
+
 sd2 <- sd(muscle_change$BB55_change[muscle_change$GROUP == 2])
 
 # pooled sd
