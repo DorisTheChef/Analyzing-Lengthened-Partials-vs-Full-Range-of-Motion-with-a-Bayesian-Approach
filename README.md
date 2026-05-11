@@ -12,6 +12,9 @@
 - `README.md`: Project overview, research question, analysis plan, and references.
 - `Analyzing-Lengthened-Partials-vs-Full-Range-of-Motion-with-a-Bayesian-Approach.Rproj`: RStudio project file for this repository.
 
+## Dataset License
+The dataset was obtained from the authors’ OSF repository. The OSF page lists the license as “No License,” so no explicit reuse license is provided. The dataset is used in this project for educational reproduction purposes with attribution to the original authors.
+
 ## Acknowledgments
 Repository tasks in this project used [Cursor Agent](https://cursor.com), an AI-assisted tool in the Cursor editor.
 
