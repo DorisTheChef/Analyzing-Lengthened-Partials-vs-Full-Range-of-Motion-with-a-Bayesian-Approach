@@ -53,3 +53,7 @@ We will compare how Bayesian and frequentist statistical approaches are applied 
 [3] F. Augustin, A. Piñero, A. Enes, A. E. Mohan, M. Sapuppo, M. Coleman, M. Wolf, P. Androulakis Korakakis, P. A. Swinton, J. Nippard, and B. J. Schoenfeld, “Do cheaters prosper? Effect of externally supplied momentum during resistance training on measures of upper body muscle hypertrophy,” International Journal of Exercise Science, vol. 18, no. 3, pp. 329–342, 2025, doi: 10.70252/GDBL2230.
 
 [4] E. N. Moreno, W. A. Ayers-Creech, S. L. Gonzalez, et al., “Does performing resistance exercise with a partial range of motion at long muscle lengths maximize muscle hypertrophic adaptations to training?,” Journal of Science in Sport and Exercise, 2024, doi: 10.1007/s42978-024-00301-z.
+
+[5]R Core Team, R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing, 2024. [Online]. Available: https://www.R-project.org/
+
+[6] P.-C. Bürkner, “brms: An R package for Bayesian multilevel models using Stan,” Journal of Statistical Software, vol. 80, no. 1, pp. 1–28, 2017, doi: 10.18637/jss.v080.i01.
