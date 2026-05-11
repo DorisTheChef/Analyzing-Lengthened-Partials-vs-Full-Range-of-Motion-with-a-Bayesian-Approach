@@ -1,6 +1,17 @@
 # Analyzing Lengthened Partials vs Full Range-of-Motion with a Bayesian Approach
 ## An Experimental Study Analysis – Callie Nguyen, Nathan Samarasena, Baixue (Doris) Zhang
 
+## Submission Information
+- **Date of submission:** May 11, 2026
+
+## Project Structure
+- `Datasets/`: Raw and intermediate data files used for analysis, plus data-preparation scripts.
+- `Papers/`: Main and supporting literature PDFs used for the study.
+- `R code/`: R scripts for reproducing analyses, simulations, Bayesian/frequentist comparisons, and generated figures.
+- `Report/`: Project write-up and proposal documents.
+- `README.md`: Project overview, research question, analysis plan, and references.
+- `Analyzing-Lengthened-Partials-vs-Full-Range-of-Motion-with-a-Bayesian-Approach.Rproj`: RStudio project file for this repository.
+
 
 ## I. Introduction
 Resistance training, or strength training, is a popular type of fitness for maintaining physical health. Many adults want to include resistance training in their routines for various reasons, such as general health, supplementary exercise for better physical performance, or achieving an aesthetic physique. During workout sessions, it is essential to always employ proper form and extend range of motion (ROM), which is the distance a muscle can move or be stimulated, to give your muscles the best opportunity to grow.
